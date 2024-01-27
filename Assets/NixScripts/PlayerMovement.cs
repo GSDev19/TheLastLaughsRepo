@@ -5,34 +5,55 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Rigidbody2D rb;
+    public Rigidbody2D RB;
     public Transform groundCheck;
     public LayerMask groundLayer;
 
-    private float horizontal;
     public float speed = 8f;
+    public float groundSpeed = 8f;
     public float jumpingPower = 16f;
+    public float groundCheckRadious = 0.5f;
+    bool isjumping = false;
 
-    // Update is called once per frame
+    private void Start()
+    {
+        isjumping = false;
+    }
     void Update()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        ReturnToPosition();
     }
 
+    private void ReturnToPosition()
+    {
+        if(transform.position.x < GameManager.Instance.playerNormalPosition.position.x)
+        {
+            Debug.Log("BEHIND");
+            RB.velocity = new Vector2(RB.velocity.x + Time.deltaTime * speed, RB.velocity.y);
+        }
+        else
+        {
+            transform.position = new Vector3(GameManager.Instance.playerNormalPosition.position.x, transform.position.y);
+        }
+    }
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && isGrounded())
+        if (context.started && isGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
+            RB.velocity = new Vector2(RB.velocity.x, jumpingPower);
         }
-        if (context.canceled && rb.velocity.y > 0f)
+        if (context.canceled && RB.velocity.y > 0f)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * 0.5f);
         }
     }
 
     private bool isGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadious, groundLayer);
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadious);
     }
 }

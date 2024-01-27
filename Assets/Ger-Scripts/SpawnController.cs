@@ -11,15 +11,15 @@ public class SpawnController : MonoBehaviour
     public float currentObjectSpawnTime = 0f;
     [Header("OBJECTS")]
     public ObjectsData objectsData = new ObjectsData();
-    [SerializeField] private Transform objectSpawnPosition;
+    [SerializeField] private Transform lowObjectSpawnPosition;
+    [SerializeField] private Transform highObjectSpawnPosition;
 
     [Space]
     [Header("GROUND")]
-    //public float groundSpawnTime = 2.5f;
-    //public float currentGroundSpawnTime = 2.5f;
     [SerializeField] private GameObject groundObject;
     [SerializeField] private Transform lowGroundSpawnPosition;
     [SerializeField] private Transform highGroundSpawnPosition;
+    public bool isLowGround = false;
 
     private void Awake()
     {
@@ -35,7 +35,6 @@ public class SpawnController : MonoBehaviour
     private void Start()
     {
         currentObjectSpawnTime = 0;
-        //currentGroundSpawnTime = 0;
 
         SpawnObject();
         SpawnGround();
@@ -43,7 +42,6 @@ public class SpawnController : MonoBehaviour
     private void Update()
     {
         HandleObjectSpawn();
-        //HandleGorundSpawn();
     }
 
     private void HandleObjectSpawn()
@@ -63,46 +61,50 @@ public class SpawnController : MonoBehaviour
     {
         List<GameObject> selectedList = GetRandomList();
 
-        // Instantiate a random object from the selected list
         if (selectedList != null && selectedList.Count > 0)
         {
             GameObject randomPrefab = selectedList[Random.Range(0, selectedList.Count)];
-            Instantiate(randomPrefab, objectSpawnPosition.position, Quaternion.identity);
+
+            if(isLowGround)
+            {
+                Instantiate(randomPrefab, lowObjectSpawnPosition.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(randomPrefab, highObjectSpawnPosition.position, Quaternion.identity);
+            }
         }
     }
-
-    //private void HandleGorundSpawn()
-    //{
-    //    if (currentGroundSpawnTime <= groundSpawnTime)
-    //    {
-    //        currentGroundSpawnTime += Time.deltaTime;
-    //    }
-    //    else
-    //    {
-    //        currentGroundSpawnTime = 0f;
-
-    //        SpawnGround();
-    //    }
-    //}
     public void SpawnGround()
     {
-        Transform spawnTransform = (Random.Range(0f, 1f) < 0.5f) ? lowGroundSpawnPosition : highGroundSpawnPosition;
+        //Transform spawnTransform = (Random.Range(0f, 1f) < 0.5f) ? lowGroundSpawnPosition : highGroundSpawnPosition;
 
-        // Instantiate the ground object at the calculated position
+        Transform spawnTransform;
+
+        float reference = Random.Range(0f, 1f);
+
+        if(reference < 0.5f)
+        {
+            spawnTransform = lowGroundSpawnPosition;
+            isLowGround = false;
+        }
+        else
+        {
+            spawnTransform = highGroundSpawnPosition;
+            isLowGround = true;
+        }
+
         Instantiate(groundObject, spawnTransform.position, Quaternion.identity);
     }
     private List<GameObject> GetRandomList()
     {
-        // Create a list of lists
         List<List<GameObject>> allLists = new List<List<GameObject>>()
         {
-            //objectsData.clownPrefabs,
             objectsData.enemyPrefabs,
             objectsData.blockerPrefabs,
             objectsData.npcPrefabs
         };
 
-        // Choose a random list
         List<GameObject> selectedList = allLists[Random.Range(0, allLists.Count)];
 
         return selectedList;

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 
     public float objectSpeedX = -10f;
     public float objectSpeedY = -10f;
+
+    public Transform playerNormalPosition;
     private void Awake()
     {
         if (!Instance)

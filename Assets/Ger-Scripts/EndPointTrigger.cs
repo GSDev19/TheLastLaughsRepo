@@ -17,7 +17,7 @@ public class EndPointTrigger : MonoBehaviour
 
                 if(obj != null)
                 {
-                    if(obj.objectType != ObjectType.Ground)
+                    if(obj.objectType != ObjectType.Ground || obj.objectType != ObjectType.Clown)
                     {
                         Destroy(obj.gameObject);
                     }
@@ -38,7 +38,7 @@ public class EndPointTrigger : MonoBehaviour
                 {
                     if (obj.objectType == ObjectType.Ground)
                     {
-                        Destroy(obj.gameObject);
+                        Destroy(obj.transform.parent.gameObject);
                         SpawnController.Instance.SpawnGround();
                     }
                 }
