@@ -10,8 +10,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundLayer;
 
     private float horizontal;
-    private float speed = 8f;
-    private float jumpingPower = 16f;
+    public float speed = 8f;
+    public float jumpingPower = 16f;
 
     // Update is called once per frame
     void Update()

@@ -9,6 +9,10 @@ public class GroundObject : MonoBehaviour
     private void Awake()
     {
         RB = GetComponent<Rigidbody2D>();
+
+    }
+    private void Start()
+    {
         RB.velocity = new Vector3(GameManager.Instance.objectSpeedX, GameManager.Instance.objectSpeedY, 0);
     }
     private void Update()
