@@ -27,7 +27,7 @@ public class EnemyObject : ObjectBehavior
     {
         if (collision != null)
         {
-            if (collision.gameObject.tag == PlayerMovement.PLAYERTAG)
+            if(CollisionCheck.CheckIfPlayer(collision.gameObject))
             {
                 GameManager.Instance.HandleEnemyHit(this);
             }

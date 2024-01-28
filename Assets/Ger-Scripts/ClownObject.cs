@@ -12,11 +12,27 @@ public class ClownObject : ObjectBehavior
     public bool picked = false;
     public bool shouldFollowPlayer = false;
 
+    public EntityBoolStates entityBoolStates;
+
+    private void OnEnable()
+    {
+        PlayerMovement.OnPlayerJump += JumpAnimation;
+        PlayerMovement.OnPlayerGrounded += WalkAnimation;
+        PlayerMovement.OnPlayerFalling += FallAnimation;
+    }
+    private void OnDisable()
+    {
+        PlayerMovement.OnPlayerJump -= JumpAnimation;
+        PlayerMovement.OnPlayerGrounded -= WalkAnimation;
+        PlayerMovement.OnPlayerFalling -= FallAnimation;
+    }
+
     private void Start()
     {
         picked = false;
         shouldFollowPlayer = false;
         SetOffset();
+        entityBoolStates.animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -40,6 +56,28 @@ public class ClownObject : ObjectBehavior
         }
     }
 
+    private void WalkAnimation()
+    {
+        if (shouldFollowPlayer == true)
+        {
+            entityBoolStates.PlayWalk();
+        }
+    }
+    private void JumpAnimation()
+    {
+        if(shouldFollowPlayer == true)
+        {
+            entityBoolStates.PlayJump();
+        }
+    }
+
+    private void FallAnimation()
+    {
+        if (shouldFollowPlayer == true)
+        {
+            entityBoolStates.PlayFall();
+        }
+    }
     private void SetOffset()
     {
         float randomValue = Random.Range(minFollowOffset, maxFollowOffset);
@@ -49,7 +87,7 @@ public class ClownObject : ObjectBehavior
     {
         if (collision != null)
         {
-            if (collision.gameObject.tag == PlayerMovement.PLAYERTAG)
+            if (CollisionCheck.CheckIfPlayer(collision.gameObject))
             {
                 picked = true;
                 GameManager.Instance.AddClown(this);

@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Object
+  - Enemy
+  - Clown
+  - NPC
+  - Blocker
+  - Ground
   layers:
   - Default
   - TransparentFX

@@ -18,7 +18,7 @@ public class SpawnController : MonoBehaviour
 
     [Space]
     [Header("GROUND")]
-    [SerializeField] private GameObject groundObject;
+    [SerializeField] private List<GameObject> groundObject;
     [SerializeField] private Transform lowGroundSpawnPosition;
     [SerializeField] private Transform highGroundSpawnPosition;
     public bool isLowGround = false;
@@ -84,9 +84,9 @@ public class SpawnController : MonoBehaviour
         canStartSpawningObjects = true;
 
         Transform spawnTransform;
-        float reference = Random.Range(0f, 1f);
+        float positionRef = Random.Range(0f, 1f);
 
-        if(reference < 0.5f)
+        if(positionRef < 0.5f)
         {
             spawnTransform = lowGroundSpawnPosition;
             isLowGround = false;
@@ -97,10 +97,23 @@ public class SpawnController : MonoBehaviour
             isLowGround = true;
         }
 
+        GameObject ground;
+        float prefabRef = Random.Range(0f, 1f);
+
+        if (positionRef < 0.5f)
+        {
+            ground = groundObject[0];
+        }
+        else
+        {
+            ground = groundObject[1];
+        }
+
         Vector3 spawnPosition = new Vector3(position.x, spawnTransform.position.y, 0);
+
         if(groundObject!= null && spawnTransform != null)
         {
-            Instantiate(groundObject, spawnPosition, Quaternion.identity);
+            Instantiate(ground, spawnPosition, Quaternion.identity);
         }
 
     }

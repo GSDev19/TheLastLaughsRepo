@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 8663943069744434184}
   - component: {fileID: 7734075015573640721}
   - component: {fileID: 1659504304388878393}
-  - component: {fileID: 6241756166311261904}
+  - component: {fileID: -6942051388317052307}
+  - component: {fileID: 3228582067055799165}
   m_Layer: 6
   m_Name: Clown 3
-  m_TagString: Object
+  m_TagString: Clown
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +160,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6241756166311261904
+--- !u!114 &-6942051388317052307
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,4 +172,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4323c94dff3264f49963ee1fa08be54f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 3
+  minFollowOffset: 1
+  maxFollowOffset: 3
+  currentOffset: 0
+  picked: 0
+  shouldFollowPlayer: 0
+  entityBoolStates:
+    IsWalking: 0
+    IsJumping: 0
+    IsFalling: 0
+    animator: {fileID: 0}
+--- !u!95 &3228582067055799165
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541468811858232394}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3b2495b88f7452940a193344e91f0e13, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

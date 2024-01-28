@@ -5,24 +5,17 @@ using UnityEngine;
 
 public class EndPointTrigger : MonoBehaviour
 {
-    public LayerMask objectsLayer;
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision != null)
         {
-            if(collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
+            if (CollisionCheck.CheckIfBlocker(collision.gameObject) || CollisionCheck.CheckIfEnemy(collision.gameObject) || CollisionCheck.CheckIfNPC(collision.gameObject))
             {
-                ObjectBehavior obj = collision.gameObject.GetComponent<ObjectBehavior>();
+                Destroy(collision.gameObject);
+            }
 
-                if(obj != null)
-                {
-                    if(obj.objectType != ObjectType.Clown)
-                    {
-                        Destroy(obj.gameObject);                        
-                    }
-                }
-
+            if (CollisionCheck.CheckIfGround(collision.gameObject))
+            {
                 GroundObject ground = collision.GetComponentInParent<GroundObject>();
 
                 if (ground != null)
@@ -37,14 +30,20 @@ public class EndPointTrigger : MonoBehaviour
     {
         if (collision != null)
         {
-            if (collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
+            if (CollisionCheck.CheckIfGround(collision.gameObject))
             {
                 GroundObject ground = collision.GetComponentInParent<GroundObject>();
 
                 if (ground != null)
                 {
-
                     Destroy(ground.transform.gameObject);
+                }
+            }
+            if (CollisionCheck.CheckIfPlayer(collision.gameObject))
+            {
+                if (PlayerMovement.Instance.RB.velocity.x < 0 || PlayerMovement.Instance.playerStates.IsFalling)
+                {
+                    GameManager.Instance.HandleLooseGame();
                 }
             }
         }

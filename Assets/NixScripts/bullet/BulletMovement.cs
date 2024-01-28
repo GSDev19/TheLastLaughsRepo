@@ -34,22 +34,16 @@ public class BulletMovement : MonoBehaviour
     {
         if (collision != null)
         {
-            if (collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
+            if (CollisionCheck.CheckIfBlocker(collision.gameObject) || CollisionCheck.CheckIfEnemy(collision.gameObject) || CollisionCheck.CheckIfNPC(collision.gameObject))
             {
-
                 ObjectBehavior obj = collision.GetComponent<ObjectBehavior>();
                 Destroy(gameObject);
 
-                if (obj != null)
+                if(CollisionCheck.CheckIfNPC(collision.gameObject))
                 {
-                    if (obj.objectType == ObjectType.NPC)
-                    {
-                        NpcObject npc = collision.GetComponent<NpcObject>();
-
-                        Vector3 pos = obj.transform.position;
-                        Destroy(obj.gameObject);
-                        SpawnController.Instance.InstantiateClown(pos);
-                    }
+                    Vector3 pos = obj.transform.position;
+                    Destroy(obj.gameObject);
+                    SpawnController.Instance.InstantiateClown(pos);
                 }
             }
         }
