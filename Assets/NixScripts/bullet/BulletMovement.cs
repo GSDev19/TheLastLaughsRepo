@@ -8,11 +8,6 @@ public class BulletMovement : MonoBehaviour
     [SerializeField] Vector2 direction = new Vector2(0, 1);
     [SerializeField] int timeDestroySelf;
 
-    private void Start()
-    {
-        Destroy(gameObject, timeDestroySelf);
-    }
-
     private void Update()
     {
         velocity = direction * speed;
@@ -37,14 +32,15 @@ public class BulletMovement : MonoBehaviour
             if (CollisionCheck.CheckIfBlocker(collision.gameObject) || CollisionCheck.CheckIfEnemy(collision.gameObject) || CollisionCheck.CheckIfNPC(collision.gameObject))
             {
                 ObjectBehavior obj = collision.GetComponent<ObjectBehavior>();
-                Destroy(gameObject);
+                Vector3 pos = obj.transform.position;
 
                 if(CollisionCheck.CheckIfNPC(collision.gameObject))
                 {
-                    Vector3 pos = obj.transform.position;
-                    Destroy(obj.gameObject);
                     SpawnController.Instance.InstantiateClown(pos);
+                    Destroy(obj.gameObject);
                 }
+
+                Destroy(gameObject);
             }
         }
     }

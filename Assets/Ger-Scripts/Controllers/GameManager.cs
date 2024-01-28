@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
     public void HandleLooseGame()
     {
         Debug.Log("LOOSE");
-        SceneManager.LoadScene(0);
+
+        SceneManager.LoadScene(1);
     }
 }

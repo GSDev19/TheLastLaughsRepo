@@ -10,7 +10,19 @@ public static class CollisionCheck
     public static string NPCTAG = "NPC";
     public static string BLOCKERTAG = "Blocker";
     public static string GROUNDTAG = "Ground";
+    public static string BULLETTAG = "Bullet";
 
+    public static bool CheckIfBullet(GameObject gameObject)
+    {
+        if (gameObject.tag == BULLETTAG)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     public static bool CheckIfGround(GameObject gameObject)
     {
         if (gameObject.tag == GROUNDTAG)

@@ -23,6 +23,11 @@ public class EndPointTrigger : MonoBehaviour
                     SpawnController.Instance.SpawnGround(ground.endPos.position);
                 }
             }
+
+            if (CollisionCheck.CheckIfBullet(collision.gameObject))
+            {
+                Destroy(collision.gameObject);
+            }
         }
     }
 
