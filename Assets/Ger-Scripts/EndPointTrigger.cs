@@ -13,14 +13,21 @@ public class EndPointTrigger : MonoBehaviour
         {
             if(collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
             {
-                ObjectBehavior obj = collision.GetComponent<ObjectBehavior>();
+                ObjectBehavior obj = collision.gameObject.GetComponent<ObjectBehavior>();
 
                 if(obj != null)
                 {
-                    if(obj.objectType != ObjectType.Ground || obj.objectType != ObjectType.Clown)
+                    if(obj.objectType != ObjectType.Clown)
                     {
-                        Destroy(obj.gameObject);
+                        Destroy(obj.gameObject);                        
                     }
+                }
+
+                GroundObject ground = collision.GetComponentInParent<GroundObject>();
+
+                if (ground != null)
+                {
+                    SpawnController.Instance.SpawnGround(ground.endPos.position);
                 }
             }
         }
@@ -32,15 +39,12 @@ public class EndPointTrigger : MonoBehaviour
         {
             if (collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
             {
-                GroundObject obj = collision.GetComponent<GroundObject>();
+                GroundObject ground = collision.GetComponentInParent<GroundObject>();
 
-                if (obj != null)
+                if (ground != null)
                 {
-                    if (obj.objectType == ObjectType.Ground)
-                    {
-                        Destroy(obj.transform.parent.gameObject);
-                        SpawnController.Instance.SpawnGround();
-                    }
+
+                    Destroy(ground.transform.gameObject);
                 }
             }
         }

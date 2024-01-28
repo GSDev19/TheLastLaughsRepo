@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7208833696523681890}
   - component: {fileID: 8663943069744434184}
-  - component: {fileID: 3533903813329477272}
   - component: {fileID: 7734075015573640721}
   - component: {fileID: 1659504304388878393}
+  - component: {fileID: 6241756166311261904}
   m_Layer: 6
   m_Name: Clown 3
   m_TagString: Object
@@ -87,19 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3533903813329477272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5541468811858232394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c3ce99e6482e9a419407ba766a83096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectType: 3
 --- !u!61 &7734075015573640721
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -172,3 +159,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6241756166311261904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541468811858232394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4323c94dff3264f49963ee1fa08be54f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectType: 3

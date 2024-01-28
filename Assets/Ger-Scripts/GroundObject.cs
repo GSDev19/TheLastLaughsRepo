@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class GroundObject : MonoBehaviour
 {
-    public ObjectType objectType;
     private Rigidbody2D RB;
+    public Transform endPos;
+    public bool isInitial = false;
+
     private void Awake()
     {
-        RB = GetComponent<Rigidbody2D>();
-
+        RB = GetComponentInChildren<Rigidbody2D>();
     }
     private void Start()
     {

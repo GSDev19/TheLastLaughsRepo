@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static string PLAYERTAG = "Player";
+
+    public static PlayerMovement Instance;
     public Rigidbody2D RB;
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -13,11 +16,17 @@ public class PlayerMovement : MonoBehaviour
     public float groundSpeed = 8f;
     public float jumpingPower = 16f;
     public float groundCheckRadious = 0.5f;
-    bool isjumping = false;
 
-    private void Start()
+    private void Awake()
     {
-        isjumping = false;
+        if (!Instance)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
     }
     void Update()
     {
@@ -26,9 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ReturnToPosition()
     {
-        if(transform.position.x < GameManager.Instance.playerNormalPosition.position.x)
+        if (transform.position.x < GameManager.Instance.playerNormalPosition.position.x)
         {
-            Debug.Log("BEHIND");
             RB.velocity = new Vector2(RB.velocity.x + Time.deltaTime * speed, RB.velocity.y);
         }
         else

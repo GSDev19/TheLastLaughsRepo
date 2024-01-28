@@ -3,12 +3,10 @@ using UnityEngine;
 public class BulletMovement : MonoBehaviour
 {
     private float speed = 10f;
-    [SerializeField] private int dañoDeLaBala; // Agrega esta línea
+    [SerializeField] private int dañoDeLaBala;
     [SerializeField] Vector2 velocity;
     [SerializeField] Vector2 direction = new Vector2(0, 1);
     [SerializeField] int timeDestroySelf;
-    [SerializeField] private string comparador;
-    [SerializeField] private string comparador2;
 
     private void Start()
     {
@@ -34,26 +32,26 @@ public class BulletMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // if (collision.CompareTag(comparador))
-        // {
-        //     Player player = collision.GetComponent<Player>();
-        //     if (player != null)
-        //     {
-        //         player.TomarDaño(dañoDeLaBala); // Usa dañoDeLaBala en lugar de dañoGolpe
-        //     }
+        if (collision != null)
+        {
+            if (collision.gameObject.tag == ObjectBehavior.OBJECTSTAG)
+            {
 
-        //     Destroy(gameObject);
-        // }
+                ObjectBehavior obj = collision.GetComponent<ObjectBehavior>();
+                Destroy(gameObject);
 
-        // if (collision.CompareTag(comparador2))
-        // {
-        //     Player2 player2 = collision.GetComponent<Player2>();
-        //     if (player2 != null)
-        //     {
-        //         player2.TomarDaño(dañoDeLaBala); // Usa dañoDeLaBala en lugar de dañoGolpe
-        //     }
+                if (obj != null)
+                {
+                    if (obj.objectType == ObjectType.NPC)
+                    {
+                        NpcObject npc = collision.GetComponent<NpcObject>();
 
-        //     Destroy(gameObject);
-        // }
+                        Vector3 pos = obj.transform.position;
+                        Destroy(obj.gameObject);
+                        SpawnController.Instance.InstantiateClown(pos);
+                    }
+                }
+            }
+        }
     }
 }

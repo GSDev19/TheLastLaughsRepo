@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class SpawnController : MonoBehaviour
     public float objectSpawnTime = 1.5f;
     public float currentObjectSpawnTime = 0f;
     [Header("OBJECTS")]
+    public bool canStartSpawningObjects = false;
     public ObjectsData objectsData = new ObjectsData();
     [SerializeField] private Transform lowObjectSpawnPosition;
     [SerializeField] private Transform highObjectSpawnPosition;
@@ -35,9 +37,7 @@ public class SpawnController : MonoBehaviour
     private void Start()
     {
         currentObjectSpawnTime = 0;
-
-        SpawnObject();
-        SpawnGround();
+        canStartSpawningObjects = false;
     }
     private void Update()
     {
@@ -46,6 +46,10 @@ public class SpawnController : MonoBehaviour
 
     private void HandleObjectSpawn()
     {
+        if(canStartSpawningObjects == false)
+        {
+            return;
+        }
         if(currentObjectSpawnTime <= objectSpawnTime)
         {
             currentObjectSpawnTime += Time.deltaTime;
@@ -75,12 +79,11 @@ public class SpawnController : MonoBehaviour
             }
         }
     }
-    public void SpawnGround()
+    public void SpawnGround(Vector3 position)
     {
-        //Transform spawnTransform = (Random.Range(0f, 1f) < 0.5f) ? lowGroundSpawnPosition : highGroundSpawnPosition;
+        canStartSpawningObjects = true;
 
         Transform spawnTransform;
-
         float reference = Random.Range(0f, 1f);
 
         if(reference < 0.5f)
@@ -94,7 +97,29 @@ public class SpawnController : MonoBehaviour
             isLowGround = true;
         }
 
-        Instantiate(groundObject, spawnTransform.position, Quaternion.identity);
+        Vector3 spawnPosition = new Vector3(position.x, spawnTransform.position.y, 0);
+        if(groundObject!= null && spawnTransform != null)
+        {
+            Instantiate(groundObject, spawnPosition, Quaternion.identity);
+        }
+
+    }
+
+    public void InstantiateClown(Vector3 pos)
+    {
+        if (objectsData.clownPrefabs.Count > 0)
+        {
+            GameObject randomPrefab = objectsData.clownPrefabs[Random.Range(0, objectsData.clownPrefabs.Count)];
+
+            if (isLowGround)
+            {
+                Instantiate(randomPrefab, pos, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(randomPrefab, pos, Quaternion.identity);
+            }
+        }
     }
     private List<GameObject> GetRandomList()
     {
