@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Sprites;
 using UnityEngine;
 
 public class EnemyObject : ObjectBehavior
