@@ -6,7 +6,6 @@ public class GroundObject : MonoBehaviour
 {
     private Rigidbody2D RB;
     public Transform endPos;
-    public bool isInitial = false;
 
     private void Awake()
     {

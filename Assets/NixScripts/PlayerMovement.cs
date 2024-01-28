@@ -75,6 +75,11 @@ public class PlayerMovement : MonoBehaviour
                         RB.velocity = new Vector2(RB.velocity.x, jumpingPower);
                         playerStates.PlayJump();
                         OnPlayerJump?.Invoke();
+
+                        if (AudioManager.Instance != null)
+                        {
+                            AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Jump, transform.position);
+                        }
                     }
                 }
                 else
@@ -115,6 +120,11 @@ public class PlayerMovement : MonoBehaviour
                     playerStates.IsJumping = true;
                     OnPlayerJump?.Invoke();
                     playerStates.PlayJump();
+
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Jump, transform.position);
+                    }
                 }
             }
         }
@@ -152,22 +162,28 @@ public class EntityBoolStates
 
     public void PlayWalk()
     {
-        animator.SetBool("Walk", true);
-        animator.SetBool("Jump", false);
-        animator.SetBool("Fall", false);
+        animator.Play("Walk");
+
+        //animator.SetBool("Walk", true);
+        //animator.SetBool("Jump", false);
+        //animator.SetBool("Fall", false);
     }
 
     public void PlayJump()
     {
-        animator.SetBool("Walk", false);
-        animator.SetBool("Jump", true);
-        animator.SetBool("Fall", false);
+        animator.Play("Jump");
+
+        //animator.SetBool("Walk", false);
+        //animator.SetBool("Jump", true);
+        //animator.SetBool("Fall", false);
     }
 
     public void PlayFall()
     {
-        animator.SetBool("Walk", false);
-        animator.SetBool("Jump", false);
-        animator.SetBool("Fall", true);
+        animator.Play("Fall");
+
+        //animator.SetBool("Walk", false);
+        //animator.SetBool("Jump", false);
+        //animator.SetBool("Fall", true);
     }
 }

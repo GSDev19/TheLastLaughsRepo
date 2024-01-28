@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,11 @@ public class GameManager : MonoBehaviour
     public Transform playerNormalPosition;
 
     public List<ClownObject> currentClowns;
+
+
+    public float minTimeBetweenEvents = 10.0f;
+    public float maxTimeBetweenEvents = 15.0f;
+
     private void Awake()
     {
         if (!Instance)
@@ -25,6 +31,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        InvokeRepeating(nameof(InstantiateRandomSound), 0f, Random.Range(minTimeBetweenEvents, maxTimeBetweenEvents));
+    }
+    void InstantiateRandomSound()
+    {
+        if (AudioManager.Instance != null)
+        {
+            int reference = Random.Range(0, 2);
+
+            if (reference == 0)
+            {
+                AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Alarm, transform.position);
+            }
+            else
+            {
+                AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Siren, transform.position);
+            }
+        }
+
+    }
     public void CreateClown(GameObject go)
     {
         Vector3 pos = go.transform.position;
@@ -74,8 +101,11 @@ public class GameManager : MonoBehaviour
     }
     public void HandleLooseGame()
     {
-        Debug.Log("LOOSE");
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Defeat, transform.position);
+        }
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

@@ -25,6 +25,11 @@ public class Shoot : MonoBehaviour
             // Elegir aleatoriamente un índice para seleccionar un prefab
             int randomIndex = Random.Range(0, projectilePrefabs.Length);
             GameObject projectile = Instantiate(projectilePrefabs[randomIndex], projectileSpawnPoint.position, Quaternion.identity);
+
+            if(AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Shoot, transform.position);
+            }
             
             // Configurar la velocidad del proyectil
             Rigidbody2D projectileRb = projectile.GetComponent<Rigidbody2D>();

@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class BulletMovement : MonoBehaviour
 {
-    private float speed = 10f;
-    [SerializeField] private int dañoDeLaBala;
+    public float speed = 10f;
     [SerializeField] Vector2 velocity;
     [SerializeField] Vector2 direction = new Vector2(0, 1);
     [SerializeField] int timeDestroySelf;
@@ -36,6 +35,12 @@ public class BulletMovement : MonoBehaviour
 
                 if(CollisionCheck.CheckIfNPC(collision.gameObject))
                 {
+
+                    if (AudioManager.Instance != null)
+                    {
+                        AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Laughter, transform.position);
+                    }
+
                     SpawnController.Instance.InstantiateClown(pos);
                     Destroy(obj.gameObject);
                 }

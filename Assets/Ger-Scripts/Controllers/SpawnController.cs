@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpawnController : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class SpawnController : MonoBehaviour
     [SerializeField] private Transform lowGroundSpawnPosition;
     [SerializeField] private Transform highGroundSpawnPosition;
     public bool isLowGround = false;
+
+    [Space]
+    [Header("GROUND")]
+    [SerializeField] private GameObject bgObject;
+    [SerializeField] private Transform BGSpawnPosition;
 
     private void Awake()
     {
@@ -79,6 +85,12 @@ public class SpawnController : MonoBehaviour
             }
         }
     }
+
+    public void SpawnBG(Vector3 pos)
+    {
+        Vector3 spawnPosition = new Vector3(pos.x, BGSpawnPosition.position.y, 0);
+        Instantiate(bgObject, spawnPosition, Quaternion.identity);
+    }
     public void SpawnGround(Vector3 position)
     {
         canStartSpawningObjects = true;
@@ -100,7 +112,7 @@ public class SpawnController : MonoBehaviour
         GameObject ground;
         float prefabRef = Random.Range(0f, 1f);
 
-        if (positionRef < 0.5f)
+        if (prefabRef < 0.5f)
         {
             ground = groundObject[0];
         }

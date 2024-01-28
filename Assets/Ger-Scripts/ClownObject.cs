@@ -14,6 +14,9 @@ public class ClownObject : ObjectBehavior
 
     public EntityBoolStates entityBoolStates;
 
+    public int currentLayer = 0;
+    private SpriteRenderer spriteRenderer;
+
     private void OnEnable()
     {
         PlayerMovement.OnPlayerJump += JumpAnimation;
@@ -31,8 +34,9 @@ public class ClownObject : ObjectBehavior
     {
         picked = false;
         shouldFollowPlayer = false;
+        entityBoolStates.animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         SetOffset();
-        entityBoolStates.animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -46,7 +50,6 @@ public class ClownObject : ObjectBehavior
             if( Mathf.Abs( transform.position.x - PlayerMovement.Instance.transform.position.x) > currentOffset)
             {
                 shouldFollowPlayer =true;
-
             }
         }
 
@@ -65,8 +68,10 @@ public class ClownObject : ObjectBehavior
     }
     private void JumpAnimation()
     {
-        if(shouldFollowPlayer == true)
+        Debug.Log("JUMPCOWNout");
+        if (shouldFollowPlayer == true)
         {
+            Debug.Log("JUMPCOWN");
             entityBoolStates.PlayJump();
         }
     }
@@ -82,6 +87,9 @@ public class ClownObject : ObjectBehavior
     {
         float randomValue = Random.Range(minFollowOffset, maxFollowOffset);
         currentOffset = randomValue;
+
+        currentLayer = Random.Range(0, 1000);
+        spriteRenderer.sortingOrder = currentLayer;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
