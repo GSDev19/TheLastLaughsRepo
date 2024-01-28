@@ -16,17 +16,26 @@ public class ClownObject : ObjectBehavior
     public int currentLayer = 0;
     private SpriteRenderer spriteRenderer;
 
-    private void OnEnable()
+   private void OnEnable()
     {
-        PlayerMovement.OnPlayerJump += JumpAnimation;
+        PlayerMovement.OnPlayerJump += HandlePlayerJump;
         PlayerMovement.OnPlayerGrounded += WalkAnimation;
         PlayerMovement.OnPlayerFalling += FallAnimation;
     }
+
     private void OnDisable()
     {
-        PlayerMovement.OnPlayerJump -= JumpAnimation;
+        PlayerMovement.OnPlayerJump -= HandlePlayerJump;
         PlayerMovement.OnPlayerGrounded -= WalkAnimation;
         PlayerMovement.OnPlayerFalling -= FallAnimation;
+    }
+
+    private void HandlePlayerJump()
+    {
+        if (picked && shouldFollowPlayer)
+        {
+            entityBoolStates.PlayJump();
+        }
     }
 
     private void Start()

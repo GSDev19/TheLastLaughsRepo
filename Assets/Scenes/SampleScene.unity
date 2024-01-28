@@ -2081,6 +2081,10 @@ PrefabInstance:
       value: GroundParent
       objectReference: {fileID: 0}
     - target: {fileID: 2583523907367166240, guid: 91b6367d90148b7428ca06e8fb795290, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2583523907367166240, guid: 91b6367d90148b7428ca06e8fb795290, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -2088,6 +2092,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 675e958b7e1400e43b3c24901b5cf5d1, type: 3}
+    - target: {fileID: 4495903448121623358, guid: 91b6367d90148b7428ca06e8fb795290, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5088451670342920010, guid: 91b6367d90148b7428ca06e8fb795290, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 10.8

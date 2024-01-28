@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     public float groundCheckRadious = 0.5f;
 
     public EntityBoolStates playerStates;
-    public bool jumpInput;
-
 
     private void Awake()
     {
@@ -35,12 +31,9 @@ public class PlayerMovement : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        playerStates.IsWalking = true;
-        playerStates.IsJumping = false;
-        playerStates.IsFalling = false;
-
-        playerStates.animator = GetComponentInChildren<Animator>();
+        playerStates.Initialize(GetComponentInChildren<Animator>());
     }
+
     void Update()
     {
         HandleMovement();
@@ -51,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (transform.position.x < GameManager.Instance.playerNormalPosition.position.x)
         {
-            RB.velocity = new Vector2(RB.velocity.x + Time.deltaTime * speed, RB.velocity.y);
+            RB.velocity = new Vector2(speed, RB.velocity.y);
         }
         else
         {
@@ -61,86 +54,56 @@ public class PlayerMovement : MonoBehaviour
 
     public void HandleMovement()
     {
-        if(CheckIsGrounded())
+        if (CheckIsGrounded())
         {
-            playerStates.IsFalling = false;
-
-            if (playerStates.IsJumping == false)
-            {
-                if(jumpInput == true)
-                {
-                    if(playerStates.IsJumping == false)
-                    {
-                        playerStates.IsJumping = true;
-                        RB.velocity = new Vector2(RB.velocity.x, jumpingPower);
-                        playerStates.PlayJump();
-                        OnPlayerJump?.Invoke();
-
-                        if (AudioManager.Instance != null)
-                        {
-                            AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Jump, transform.position);
-                        }
-                    }
-                }
-                else
-                {
-                    if (playerStates.IsWalking == false)
-                    {
-                        playerStates.IsWalking = true;
-                        OnPlayerGrounded?.Invoke();
-                        playerStates.PlayWalk();
-                    }
-
-                }
-
-            }
+            HandleGrounded();
         }
         else
         {
-            if(RB.velocity.y <= 0)
-            {
-                playerStates.IsJumping = false;
-                playerStates.IsWalking = false;
-
-                if(playerStates.IsFalling == false)
-                {
-                    playerStates.IsFalling = true;
-                    OnPlayerFalling?.Invoke();
-                    playerStates.PlayFall();
-                }
-
-            }
-            else
-            {
-                playerStates.IsFalling = false;
-                playerStates.IsWalking = false;
-
-                if(playerStates.IsJumping == false)
-                {
-                    playerStates.IsJumping = true;
-                    OnPlayerJump?.Invoke();
-                    playerStates.PlayJump();
-
-                    if (AudioManager.Instance != null)
-                    {
-                        AudioManager.Instance.PlayOneShot(FmodEvents.Instance.Jump, transform.position);
-                    }
-                }
-            }
+            HandleAirborne();
         }
     }
+
+    private void HandleGrounded()
+    {
+        playerStates.IsFalling = false;
+
+        if (playerStates.IsJumping)
+        {
+            playerStates.IsJumping = false;
+            OnPlayerGrounded?.Invoke();
+            playerStates.PlayWalk();
+        }
+        else
+        {
+            // Handle walking here if needed
+        }
+    }
+
+    private void HandleAirborne()
+    {
+        playerStates.IsWalking = false;
+
+        if (RB.velocity.y <= 0 && !playerStates.IsFalling)
+        {
+            playerStates.IsFalling = true;
+            OnPlayerFalling?.Invoke();
+            playerStates.PlayFall();
+        }
+        else if (RB.velocity.y > 0 && !playerStates.IsJumping)
+        {
+            playerStates.IsJumping = true;
+            OnPlayerJump?.Invoke();
+            playerStates.PlayJump();
+            AudioManager.Instance?.PlayOneShot(FmodEvents.Instance.Jump, transform.position);
+        }
+    }
+
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && CheckIsGrounded())
         {
-            jumpInput = true;
-
-        }
-        if (context.canceled)
-        {
-            jumpInput = false;
-
-            //RB.velocity = new Vector2(RB.velocity.x, RB.velocity.y * 0.5f);
+            RB.velocity = new Vector2(RB.velocity.x, jumpingPower);
         }
     }
 
@@ -148,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadious, groundLayer);
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadious);
@@ -160,30 +124,26 @@ public class EntityBoolStates
     public bool IsWalking, IsJumping, IsFalling;
     public Animator animator;
 
+    public void Initialize(Animator animator)
+    {
+        this.animator = animator;
+        IsWalking = false;
+        IsJumping = false;
+        IsFalling = false;
+    }
+
     public void PlayWalk()
     {
         animator.Play("Walk");
-
-        //animator.SetBool("Walk", true);
-        //animator.SetBool("Jump", false);
-        //animator.SetBool("Fall", false);
     }
 
     public void PlayJump()
     {
         animator.Play("Jump");
-
-        //animator.SetBool("Walk", false);
-        //animator.SetBool("Jump", true);
-        //animator.SetBool("Fall", false);
     }
 
     public void PlayFall()
     {
         animator.Play("Fall");
-
-        //animator.SetBool("Walk", false);
-        //animator.SetBool("Jump", false);
-        //animator.SetBool("Fall", true);
     }
 }
