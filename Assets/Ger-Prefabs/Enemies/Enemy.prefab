@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3ce99e6482e9a419407ba766a83096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHits: 20
+  maxHits: 60
   minHits: 1
   necessaryHits: 2
   hitsText: {fileID: 7430718986707408605}
